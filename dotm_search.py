@@ -9,6 +9,7 @@ __author__ = "luisfff29"
 
 import argparse
 import zipfile
+import sys
 import os
 
 
@@ -21,14 +22,20 @@ def create_parser():
         description="Print full path name of each file and a partial line of the dotm text that was found to contain the search text.")
     parser.add_argument('--dir', action="store",
                         help="OPTIONAL directory of .dotm files to scan")
-    parser.add_argument('text', help="text to search for")
+    parser.add_argument('text', help="Text to search for")
     return parser
 
 
 def main():
     parser = create_parser()
     args = parser.parse_args()
-    args()
+
+    if not args:
+        parser.print_usage()
+        sys.exit(1)
+
+    my_dir = args.dir
+    my_text = args.text
     # raise NotImplementedError("Your awesome code begins here!")
 
 
