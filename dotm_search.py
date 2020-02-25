@@ -36,11 +36,9 @@ def main():
     if my_dir:
         [(dirpath, dirnames, filenames)] = list(os.walk(my_dir))
         for dotm in filenames:
-            print(dotm)
-
-    # with zipfile.ZipFile('dotm_files/@999.dotm') as zf:
-    #     print(zf.read('word/document.xml'))
-
+            file_path = os.path.join(my_dir, dotm)
+            with zipfile.ZipFile(file_path) as zf:
+                print(zf.read('word/document.xml'))
     # raise NotImplementedError("Your awesome code begins here!")
 
 
