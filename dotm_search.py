@@ -13,10 +13,6 @@ import sys
 import os
 
 
-# with zipfile.ZipFile('dotm_files/@999.dotm') as zf:
-#     print(zf.read('word/document.xml'))
-
-
 def create_parser():
     parser = argparse.ArgumentParser(
         description="Print full path name of each file and a partial line of the dotm text that was found to contain the search text.")
@@ -36,6 +32,15 @@ def main():
 
     my_dir = args.dir
     my_text = args.text
+
+    if my_dir:
+        [(dirpath, dirnames, filenames)] = list(os.walk(my_dir))
+        for dotm in filenames:
+            print(dotm)
+
+    # with zipfile.ZipFile('dotm_files/@999.dotm') as zf:
+    #     print(zf.read('word/document.xml'))
+
     # raise NotImplementedError("Your awesome code begins here!")
 
 
