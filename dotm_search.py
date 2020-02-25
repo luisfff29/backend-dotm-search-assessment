@@ -7,10 +7,15 @@ within the 'word/document.xml' section of a MSWord .dotm file.
 """
 __author__ = "luisfff29"
 
+import zipfile
+
+with zipfile.ZipFile('dotm_files/@999.dotm') as zf:
+    print(zf.read('word/document.xml'))
+
 
 def main():
     raise NotImplementedError("Your awesome code begins here!")
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
