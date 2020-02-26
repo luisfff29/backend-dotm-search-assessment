@@ -34,11 +34,19 @@ def main():
     my_text = args.text
 
     if my_dir:
+        print("Searching directory {} for text '{}' ...".format(my_dir, my_text))
         [(dirpath, dirnames, filenames)] = list(os.walk(my_dir))
         for dotm in filenames:
-            file_path = os.path.join(my_dir, dotm)
-            with zipfile.ZipFile(file_path) as zf:
-                print(zf.read('word/document.xml'))
+            if dotm.endswith('.dotm'):
+                file_path = os.path.join(my_dir, dotm)
+                with zipfile.ZipFile(file_path) as zf:
+
+                    block40 = zf.read('word/document.xml')
+                    i = block40.find(my_text)
+                    if i > 0:
+                        print('Match found in file {}'.format(file_path))
+                        print('...{}{}...'.format(
+                            block40[i-40:i], block40[i:i+len(my_text)+39]))
     # raise NotImplementedError("Your awesome code begins here!")
 
 
