@@ -42,14 +42,20 @@ def main():
             if os.path.isfile(os.path.join(os.getcwd(), files)) and not files.startswith("."):
                 count_files_searched += 1
                 file_path = os.path.join(my_dir, files)
+                content = ''
                 with open(files, 'r') as read_file:
-                    file_content = read_file.read()
-                    i = file_content.find(my_text)
+                    for string in read_file.readlines():
+                        content += string.replace('\n', '\\n')
+                    i = content.find(my_text)
                     if i > 0:
                         count_files_matched += 1
                         print('Match found in file {}'.format(file_path))
+                        if i < 40:
+                            print('   ...{}{}...'.format(
+                                content[:i], content[i:i+len(my_text)+39]))
+                            continue
                         print('   ...{}{}...'.format(
-                            file_content[i-40:i], file_content[i:i+len(my_text)+39]))
+                            content[i-40:i], content[i:i+len(my_text)+39]))
         print('Total files searched: {}'.format(count_files_searched))
         print('Total files matched: {}'.format(count_files_matched))
 
