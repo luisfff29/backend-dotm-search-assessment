@@ -32,21 +32,28 @@ def main():
 
     my_dir = args.dir
     my_text = args.text
+    # my_dir = "./dotm_files"
+    # my_text = "$"
+    count_files_searched = 0
+    count_files_matched = 0
 
     if my_dir:
         print("Searching directory {} for text '{}' ...".format(my_dir, my_text))
         [(dirpath, dirnames, filenames)] = list(os.walk(my_dir))
         for dotm in filenames:
             if dotm.endswith('.dotm'):
+                count_files_searched += 1
                 file_path = os.path.join(my_dir, dotm)
                 with zipfile.ZipFile(file_path) as zf:
-
                     block40 = zf.read('word/document.xml')
                     i = block40.find(my_text)
-                    if i > 0:
-                        print('Match found in file {}'.format(file_path))
-                        print('...{}{}...'.format(
-                            block40[i-40:i], block40[i:i+len(my_text)+39]))
+                if i > 0:
+                    count_files_matched += 1
+                    print('Match found in file {}'.format(file_path))
+                    print('   ...{}{}...'.format(
+                        block40[i-40:i], block40[i:i+len(my_text)+39]))
+        print('Total dotm files searched: {}'.format(count_files_searched))
+        print('Total dotm files matched: {}'.format(count_files_matched))
     # raise NotImplementedError("Your awesome code begins here!")
 
 
