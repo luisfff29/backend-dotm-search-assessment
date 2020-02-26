@@ -16,7 +16,7 @@ import os
 def create_parser():
     parser = argparse.ArgumentParser(
         description="Print full path name of each file and a partial line of the dotm text that was found to contain the search text.")
-    parser.add_argument('--dir', action="store",
+    parser.add_argument('--dir', action="store", default=os.getcwd(),
                         help="OPTIONAL directory of .dotm files to scan")
     parser.add_argument('text', help="Text to search for")
     return parser
@@ -32,12 +32,28 @@ def main():
 
     my_dir = args.dir
     my_text = args.text
-    # my_dir = "./dotm_files"
-    # my_text = "$"
+
     count_files_searched = 0
     count_files_matched = 0
 
-    if my_dir:
+    if os.getcwd() == my_dir:
+        print("Searching directory {} for text '{}' ...".format(my_dir, my_text))
+        for files in os.listdir(os.getcwd()):
+            if os.path.isfile(os.path.join(os.getcwd(), files)) and not files.startswith("."):
+                count_files_searched += 1
+                file_path = os.path.join(my_dir, files)
+                with open(files, 'r') as read_file:
+                    file_content = read_file.read()
+                    i = file_content.find(my_text)
+                    if i > 0:
+                        count_files_matched += 1
+                        print('Match found in file {}'.format(file_path))
+                        print('   ...{}{}...'.format(
+                            file_content[i-40:i], file_content[i:i+len(my_text)+39]))
+        print('Total files searched: {}'.format(count_files_searched))
+        print('Total files matched: {}'.format(count_files_matched))
+
+    elif os.path.isdir(my_dir):
         print("Searching directory {} for text '{}' ...".format(my_dir, my_text))
         [(dirpath, dirnames, filenames)] = list(os.walk(my_dir))
         for dotm in filenames:
@@ -54,7 +70,8 @@ def main():
                         block40[i-40:i], block40[i:i+len(my_text)+39]))
         print('Total dotm files searched: {}'.format(count_files_searched))
         print('Total dotm files matched: {}'.format(count_files_matched))
-    # raise NotImplementedError("Your awesome code begins here!")
+    else:
+        print('{} is not a valid directory'.format(my_dir))
 
 
 if __name__ == '__main__':
